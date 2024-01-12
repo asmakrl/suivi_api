@@ -20,8 +20,8 @@ return new class extends Migration
 
             $table->foreignId('sender_id')
                 ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
         });
     }
 
