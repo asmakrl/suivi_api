@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Requests;
+use App\Models\Request as Requests;
 use Illuminate\Http\Request;
 
 class RequestsController extends Controller
@@ -12,7 +12,7 @@ class RequestsController extends Controller
      */
     public function index()
     {
-        $req = Requests::all();
+        $req = Requests::with('sender')->get();;
         return response()->json($req);
     }
 

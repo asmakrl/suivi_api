@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Requests extends Model
+class Request extends Model
 {
     use HasFactory;
     protected $table = 'requests';
@@ -15,12 +15,12 @@ class Requests extends Model
 
     public function senders(): BelongsTo
     {
-        return $this->belongsTo(senders::class);
+        return $this->belongsTo(Sender::class);
     }
 
     public function files(): BelongsToMany
     {
-        return $this->belongsToMany(files::class);
+        return $this->belongsToMany(Files::class);
     }
 
 

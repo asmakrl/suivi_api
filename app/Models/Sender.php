@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Senders extends Model
+class Sender extends Model
 {
     use HasFactory;
     protected $table ='senders';
@@ -14,7 +14,7 @@ class Senders extends Model
 
     public function requests(): BelongsToMany
     {
-        return $this->belongsToMany(requests::class);
+        return $this->belongsToMany(Request::class);
     }
 
 }
