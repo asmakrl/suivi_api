@@ -11,7 +11,7 @@ class Requests extends Model
 {
     use HasFactory;
     protected $table = 'requests';
-    protected $fillable = ['title','content','received_at'];
+    protected $fillable = ['title','description','received_at'];
 
     public function senders(): BelongsTo
     {

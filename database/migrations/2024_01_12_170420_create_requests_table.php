@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('content');
+            $table->string('description');
             $table->date('received_at');
             $table->timestamps();
 
             $table->foreignId('sender_id')
                 ->constrained()
-                ->onUpdate('restrict')
-                ->onDelete('restrict');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
