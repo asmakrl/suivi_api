@@ -6,14 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Files extends Model
+class Action extends Model
 {
     use HasFactory;
-    protected $table = 'files';
-    protected $fillable = ['title','file_size','file_path'];
+    protected $table = 'actions';
+    protected $fillable = ['action_time'];
 
-    public function requests(): BelongsTo
+    public function type(): BelongsTo
     {
-        return $this->belongsTo(requests::class);
+        return $this->belongsTo(type::class);
     }
+
+
 }

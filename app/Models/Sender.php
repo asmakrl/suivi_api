@@ -12,7 +12,7 @@ class Sender extends Model
     protected $table ='senders';
     protected $fillable = ['name', 'sent_at'];
 
-    public function requests(): BelongsToMany
+    public function request(): BelongsToMany
     {
         return $this->belongsToMany(Request::class);
     }

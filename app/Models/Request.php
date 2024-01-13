@@ -13,14 +13,14 @@ class Request extends Model
     protected $table = 'requests';
     protected $fillable = ['title','description','received_at'];
 
-    public function senders(): BelongsTo
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(Sender::class);
     }
 
-    public function files(): BelongsToMany
+    public function file(): BelongsToMany
     {
-        return $this->belongsToMany(Files::class);
+        return $this->belongsToMany(File::class);
     }
 
 
