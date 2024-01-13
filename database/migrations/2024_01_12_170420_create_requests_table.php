@@ -22,6 +22,11 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('restrict')
                 ->onDelete('restrict');
+
+           $table->foreignId('state_id')
+                ->constrained()
+                ->onUpdate('restrict')
+               ->onDelete('restrict');
         });
     }
 
