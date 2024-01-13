@@ -10,7 +10,7 @@ class Sender extends Model
 {
     use HasFactory;
     protected $table ='senders';
-    protected $fillable = ['name', 'sent_at'];
+    protected $fillable = ['name'];
 
     public function request(): BelongsToMany
     {

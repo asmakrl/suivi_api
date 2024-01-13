@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('senders', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('sent_at');
+            //$table->date('sent_at');
             $table->timestamps();
         });
     }

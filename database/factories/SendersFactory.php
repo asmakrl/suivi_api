@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Senders>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sender>
  */
 class SendersFactory extends Factory
 {
@@ -18,7 +18,7 @@ class SendersFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'sent_at' => $this->faker->date(),
+            //'sent_at' => $this->faker->date(),
 
         ];
     }

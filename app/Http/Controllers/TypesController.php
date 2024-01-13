@@ -50,7 +50,7 @@ class TypesController extends Controller
         if ($type = Type::where('id',$id)){
             $type = Type::find($id);
             $type->action_type = is_null($request->action_type)? $type->action_type : $request->action_type;
-            $action->save();
+            $type->save();
 
             return response()->json(['message','Type Updated.'],200);
         }

@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Requests;
+use App\Models\Request;
+
 use Illuminate\Database\Seeder;
 
 
@@ -13,7 +14,7 @@ class RequestsSeeder extends Seeder
      */
     public function run(): void
     {
-        Requests::factory()->count(50)->create();
+        Request::factory()->count(50)->create();
 
         }
 
