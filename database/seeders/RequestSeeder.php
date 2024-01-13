@@ -7,7 +7,7 @@ use App\Models\Request;
 use Illuminate\Database\Seeder;
 
 
-class RequestsSeeder extends Seeder
+class RequestSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -2,29 +2,26 @@
 
 namespace Database\Factories;
 
-use App\Models\Requests;
+use App\Models\Request;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Faker\Factory as Faker;
-
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Requests>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class RequestsFactory extends Factory
+class FileFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = Requests::class;
     public function definition(): array
     {
         return [
             'title' => $this->faker->title(),
-            'description' => $this->faker->sentence(),
-            'received_at' => $this->faker->date(),
-
+            'file_path' => $this->faker->filePath(),
+            'file_size' => $this->faker->randomFloat(),
+            'request_id'=> Request::all()->random()->id,
 
         ];
     }

@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Type;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sender>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class SendersFactory extends Factory
+class ActionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +19,8 @@ class SendersFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            //'sent_at' => $this->faker->date(),
+            'action_time' => $this->faker->date(),
+            'type_id'=> Type::all()->random()->id,
 
         ];
     }
