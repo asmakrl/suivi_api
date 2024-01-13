@@ -24,6 +24,7 @@ class ActionsController extends Controller
     public function store(Request $request)
     {
         $action = New Action;
+        $action -> name = $request -> name;
         $action -> action_time = $request -> action_time;
         $action -> save();
 
@@ -51,6 +52,7 @@ class ActionsController extends Controller
     {
         if ($action = Action::where('id',$id)){
             $action = Action::find($id);
+            $action -> name = is_null($request->name)? $action->name : $request->name;
             $action->action_time = is_null($request->action_time)? $action->action_time : $request->action_time;
             $action->save();
 

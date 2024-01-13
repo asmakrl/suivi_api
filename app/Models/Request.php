@@ -23,6 +23,11 @@ class Request extends Model
         return $this->belongsToMany(File::class);
     }
 
+    public function state(): BelongsTo
+    {
+        return $this->belongsTo(State::class);
+    }
+
 
 
 

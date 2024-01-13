@@ -10,7 +10,7 @@ class Action extends Model
 {
     use HasFactory;
     protected $table = 'actions';
-    protected $fillable = ['action_time'];
+    protected $fillable = ['name','action_time'];
 
     public function type(): BelongsTo
     {

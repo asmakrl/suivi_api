@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\SendersController;
+use App\Http\Controllers\StatesController;
+use App\Http\Controllers\TypesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,29 +31,36 @@ Route::put('requests/{id}', [RequestsController::class, 'update']);
 Route::delete('requests/{id}', [RequestsController::class, 'destroy']);
 
 //senders
-Route::get('senders', [RequestsController::class, 'index']);
-Route::post('senders', [RequestsController::class, 'store']);
-Route::get('senders/{id}', [RequestsController::class, 'show']);
-Route::put('senders/{id}', [RequestsController::class, 'update']);
-Route::delete('senders/{id}', [RequestsController::class, 'destroy']);
+Route::get('senders', [SendersController::class, 'index']);
+Route::post('senders', [SendersController::class, 'store']);
+Route::get('senders/{id}', [SendersController::class, 'show']);
+Route::put('senders/{id}', [SendersController::class, 'update']);
+Route::delete('senders/{id}', [SendersController::class, 'destroy']);
 
 //types
-Route::get('types', [RequestsController::class, 'index']);
-Route::post('types', [RequestsController::class, 'store']);
-Route::get('types/{id}', [RequestsController::class, 'show']);
-Route::put('types/{id}', [RequestsController::class, 'update']);
-Route::delete('types/{id}', [RequestsController::class, 'destroy']);
+Route::get('types', [TypesController::class, 'index']);
+Route::post('types', [TypesController::class, 'store']);
+Route::get('types/{id}', [TypesController::class, 'show']);
+Route::put('types/{id}', [TypesController::class, 'update']);
+Route::delete('types/{id}', [TypesController::class, 'destroy']);
 
 //actions
-Route::get('actions', [RequestsController::class, 'index']);
-Route::post('actions', [RequestsController::class, 'store']);
-Route::get('actions/{id}', [RequestsController::class, 'show']);
-Route::put('actions/{id}', [RequestsController::class, 'update']);
-Route::delete('actions/{id}', [RequestsController::class, 'destroy']);
+Route::get('actions', [ActionsController::class, 'index']);
+Route::post('actions', [ActionsController::class, 'store']);
+Route::get('actions/{id}', [ActionsController::class, 'show']);
+Route::put('actions/{id}', [ActionsController::class, 'update']);
+Route::delete('actions/{id}', [ActionsController::class, 'destroy']);
 
 //files
-Route::get('files', [RequestsController::class, 'index']);
-Route::post('files', [RequestsController::class, 'store']);
-Route::get('files/{id}', [RequestsController::class, 'show']);
-Route::put('files/{id}', [RequestsController::class, 'update']);
-Route::delete('file/{id}', [RequestsController::class, 'destroy']);
+Route::get('files', [FilesController::class, 'index']);
+Route::post('files', [FilesController::class, 'store']);
+Route::get('files/{id}', [FilesController::class, 'show']);
+Route::put('files/{id}', [FilesController::class, 'update']);
+Route::delete('file/{id}', [FilesController::class, 'destroy']);
+
+//states
+Route::get('states', [StatesController::class, 'index']);
+Route::post('states', [StatesController::class, 'store']);
+Route::get('states/{id}', [StatesController::class, 'show']);
+Route::put('states/{id}', [StatesController::class, 'update']);
+Route::delete('states/{id}', [StatesController::class, 'destroy']);
