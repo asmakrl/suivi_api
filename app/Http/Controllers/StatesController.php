@@ -50,7 +50,7 @@ class StatesController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        if ($state = State::where('id',$id)){
+        if (State::where('id',$id)){
             $state = State::find($id);
             $state->code = is_null($request->code)? $state->code : $request->code;
             $state->nomAr = is_null($request->nomAr)? $state->nomAr : $request->nomAr;
@@ -69,7 +69,7 @@ class StatesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         if ($state = State::where('id',$id)){
             $state = State::find($id);

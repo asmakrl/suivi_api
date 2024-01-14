@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
+
 class TypesController extends Controller
 {
     /**
@@ -47,7 +48,7 @@ class TypesController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        if ($type = Type::where('id',$id)){
+        if (Type::where('id',$id)){
             $type = Type::find($id);
             $type->action_type = is_null($request->action_type)? $type->action_type : $request->action_type;
             $type->save();
@@ -64,7 +65,8 @@ class TypesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+
+    public function destroy($id)
     {
         if ($type = Type::where('id',$id)){
             $type = Type::find($id);

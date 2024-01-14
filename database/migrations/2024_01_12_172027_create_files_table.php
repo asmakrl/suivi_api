@@ -20,8 +20,8 @@ return new class extends Migration
 
             $table->foreignId('request_id')
                 ->constrained()
-                ->onUpdate('restrict')
-                ->onDelete('restrict');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('filesses');
+        Schema::dropIfExists('files');
     }
 };

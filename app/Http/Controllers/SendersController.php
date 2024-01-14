@@ -64,9 +64,9 @@ class SendersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy( $id)
     {
-        if ($sender = Sender::where('id',$id)){
+        if (Sender::where('id',$id)){
             $sender = Sender::find($id);
             $sender->delete();
             return response()->json(['message', 'Sender Deleted.'], 200);

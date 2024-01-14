@@ -24,7 +24,9 @@ class RequestsController extends Controller
         $req = New Requests();
         $req->title = $request->title;
         $req->description = $request->description;
-        $req-> recieved_at = $request->received_at;
+        $req-> received_at = $request->received_at;
+        $req->sender_id = $request->sender_id;
+        $req->state_id = $request->state_id;
         $req->save();
         return response()->json(['message' => 'Request has been created successfully'],201);
 
@@ -53,7 +55,9 @@ class RequestsController extends Controller
             $req = Requests::find($id);
             $req->title = is_null($request->title) ? $req->title : $request->title;
             $req->description = is_null($request->description) ? $req->description : $request->description;
-            $req->recieved_at = is_null($request->received_at) ? $req->received_at : $request->received_at;
+            $req->received_at = is_null($request->received_at) ? $req->received_at : $request->received_at;
+            $req->sender_id = is_null($request->sender_id) ? $req->sender_id : $request->sender_id;
+            $req->state_id = is_null($request->state_id) ? $req->state_id : $request->state_id;
             $req->save();
             return response()->json(['message' => 'Request has been updated successfully'], 200);
         }
@@ -71,7 +75,7 @@ class RequestsController extends Controller
             $req = Requests::find($id);
             $req->delete();
 
-            return response()->json(['message', 'Request Has been Deleted.'],202);
+            return response()->json(['message', 'Request Has been Deleted.'],200);
         }
         else{
             return response()->json(['message','Request Not Found'],404);
