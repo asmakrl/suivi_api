@@ -51,7 +51,7 @@ class ActionsController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        if ( Action::where('id',$id)){
+        if ( Action::where('id',$id)->exists()) {
             $action = Action::find($id);
             $action -> name = is_null($request->name)? $action->name : $request->name;
             $action->action_time = is_null($request->action_time)? $action->action_time : $request->action_time;
@@ -72,7 +72,7 @@ class ActionsController extends Controller
      */
     public function destroy( $id)
     {
-        if ($action = Action::where('id',$id)){
+        if (Action::where('id',$id)->exists()) {
             $action = Action::find($id);
             $action->delete();
             return response()->json(['message', 'Action Deleted.'], 200);

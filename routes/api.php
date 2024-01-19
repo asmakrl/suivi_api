@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //requests
 Route::get('requests', [RequestsController::class, 'index']);
 Route::post('requests', [RequestsController::class, 'store']);
+Route::post('requests/{request_id}/actions/{action_id}', [RequestsController::class, 'add']);
 Route::get('requests/{id}', [RequestsController::class, 'show']);
 Route::put('requests/{id}', [RequestsController::class, 'update']);
 Route::delete('requests/{id}', [RequestsController::class, 'destroy']);
@@ -56,7 +57,7 @@ Route::get('files', [FilesController::class, 'index']);
 Route::post('files', [FilesController::class, 'store']);
 Route::get('files/{id}', [FilesController::class, 'show']);
 Route::put('files/{id}', [FilesController::class, 'update']);
-Route::delete('file/{id}', [FilesController::class, 'destroy']);
+Route::delete('files/{id}', [FilesController::class, 'destroy']);
 
 //states
 Route::get('states', [StatesController::class, 'index']);

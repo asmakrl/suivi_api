@@ -24,8 +24,8 @@ class StatesController extends Controller
     {
         $state = New State;
         $state -> code = $request -> code;
+        $state -> nomFr = $request -> nomFr;
         $state -> nomAr = $request -> nomAr;
-        $state ->nomFr = $request -> NomFr;
         $state -> save();
 
         return response()->json(['message','State Added.'],201);
@@ -50,7 +50,7 @@ class StatesController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        if (State::where('id',$id)){
+        if (State::where('id',$id)->exists()) {
             $state = State::find($id);
             $state->code = is_null($request->code)? $state->code : $request->code;
             $state->nomAr = is_null($request->nomAr)? $state->nomAr : $request->nomAr;
@@ -71,7 +71,7 @@ class StatesController extends Controller
      */
     public function destroy($id)
     {
-        if ($state = State::where('id',$id)){
+        if (State::where('id',$id)->exists()) {
             $state = State::find($id);
             $state->delete();
             return response()->json(['message', 'State Deleted.'], 200);

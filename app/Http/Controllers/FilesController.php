@@ -50,7 +50,7 @@ class FilesController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        if ($file = File::where('id',$id)){
+        if (File::where('id',$id)->exists()) {
             $file = File::find($id);
             $file->title = is_null($request->title)? $file->title : $request->title;
             $file->file_path = is_null($request->file_path)? $file->file_path : $request->file_path;
@@ -72,7 +72,7 @@ class FilesController extends Controller
      */
     public function destroy( $id)
     {
-        if (File::where('id',$id)){
+        if (File::where('id',$id)->exists()) {
             $file = File::find($id);
             $file->delete();
             return response()->json(['message', 'File Deleted.'], 200);

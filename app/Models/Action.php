@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Action extends Model
 {
@@ -16,6 +17,13 @@ class Action extends Model
     {
         return $this->belongsTo(type::class);
     }
+
+    public function request(): BelongsToMany
+    {
+        return $this->belongsToMany(Request::class, 'action_requests', 'action_id', 'request_id');
+        //return $this->belongsToMany(request::class);
+    }
+
 
 
 }

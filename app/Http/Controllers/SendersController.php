@@ -47,7 +47,7 @@ class SendersController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        if ($sender = Sender::where('id',$id)){
+        if ( Sender::where('id',$id)->exists()){
             $sender = Sender::find($id);
             $sender->name = is_null($request->name)? $sender->name : $request->name;
             $sender->save();
@@ -66,7 +66,7 @@ class SendersController extends Controller
      */
     public function destroy( $id)
     {
-        if (Sender::where('id',$id)){
+        if (Sender::where('id',$id)->exists()){
             $sender = Sender::find($id);
             $sender->delete();
             return response()->json(['message', 'Sender Deleted.'], 200);

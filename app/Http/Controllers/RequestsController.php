@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Action;
 use App\Models\Request as Requests;
 use Illuminate\Http\Request;
 
@@ -12,8 +13,9 @@ class RequestsController extends Controller
      */
     public function index()
     {
-        $req = Requests::with('sender')->get();;
-        return response()->json($req);
+        //$req = Requests::all();
+        $req = Requests::with('action')->get();
+        return response()->json($req, 200);
     }
 
     /**
@@ -28,9 +30,32 @@ class RequestsController extends Controller
         $req->sender_id = $request->sender_id;
         $req->state_id = $request->state_id;
         $req->save();
+
+
         return response()->json(['message' => 'Request has been created successfully'],201);
 
     }
+
+    public function add($request_id, $action_id)
+    {
+        $requestExists = Requests::find($request_id);
+        $actionExists = Action::find($action_id);
+
+        if ($requestExists && $actionExists) {
+            $req = Requests::find($request_id);
+            $action = Action::find($action_id);
+
+
+            $b=$req->action()->attach($action);
+
+            return response()->json($b);
+
+          //  return response()->json(['message' => 'Action has been added successfully'], 201);
+        } else {
+            return response()->json(['message' => 'Request or Action not found'], 404);
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -52,6 +77,7 @@ class RequestsController extends Controller
     public function update(Request $request,  $id)
     {
         if(Requests::where('id',$id)->exists()){
+
             $req = Requests::find($id);
             $req->title = is_null($request->title) ? $req->title : $request->title;
             $req->description = is_null($request->description) ? $req->description : $request->description;
@@ -73,6 +99,7 @@ class RequestsController extends Controller
     {
         if (Requests::where('id', $id)->exists()){
             $req = Requests::find($id);
+            $req-> action() -> detach();
             $req->delete();
 
             return response()->json(['message', 'Request Has been Deleted.'],200);

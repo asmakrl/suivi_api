@@ -48,7 +48,7 @@ class TypesController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        if (Type::where('id',$id)){
+        if (Type::where('id',$id)->exists()) {
             $type = Type::find($id);
             $type->action_type = is_null($request->action_type)? $type->action_type : $request->action_type;
             $type->save();
@@ -68,7 +68,7 @@ class TypesController extends Controller
 
     public function destroy($id)
     {
-        if ($type = Type::where('id',$id)){
+        if (Type::where('id',$id)->exists()) {
             $type = Type::find($id);
             $type->delete();
             return response()->json(['message', 'Type Deleted.'], 200);
