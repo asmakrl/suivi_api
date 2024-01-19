@@ -46,11 +46,11 @@ class RequestsController extends Controller
             $action = Action::find($action_id);
 
 
-            $b=$req->action()->attach($action);
+            $req->action()->attach($action);
 
-            return response()->json($b);
+            //return response()->json(Requests::with('action')->where('id', $request_id)->get(), 201);
 
-          //  return response()->json(['message' => 'Action has been added successfully'], 201);
+            return response()->json(['message' => 'Action has been added successfully'], 201);
         } else {
             return response()->json(['message' => 'Request or Action not found'], 404);
         }
@@ -92,6 +92,29 @@ class RequestsController extends Controller
         }
     }
 
+    public function update_relation($request_id, $action_id)
+    {
+        $requestExists = Requests::find($request_id);
+        $actionExists = Action::find($action_id);
+
+        if ($requestExists && $actionExists) {
+            $req = Requests::find($request_id);
+            $action = Action::find($action_id);
+
+
+            $req->action()->sync([$action_id]);
+
+
+
+
+            //return response()->json(Requests::with('action')->where('id', $request_id)->first(), 200);
+            return response()->json(['message' => 'Action has been updated successfully'], 201);
+        } else {
+            return response()->json(['error' => 'Request or Action not found'], 404);
+        }
+    }
+
+
     /**
      * Remove the specified resource from storage.
      */
@@ -108,4 +131,26 @@ class RequestsController extends Controller
             return response()->json(['message','Request Not Found'],404);
         }
     }
+
+    public function delete_relation($request_id, $action_id)
+    {
+        $requestExists = Requests::find($request_id);
+        $actionExists = Action::find($action_id);
+
+        if ($requestExists && $actionExists) {
+            $req = Requests::find($request_id);
+
+
+            $req->action()->detach($action_id);
+
+
+
+
+           // return response()->json(Requests::with('action')->where('id', $request_id)->first(), 200);
+            return response()->json(['message', 'Request Has been Deleted.'],200);
+        } else {
+            return response()->json(['error' => 'Request or Action not found'], 404);
+        }
+    }
+
 }

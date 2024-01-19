@@ -20,7 +20,8 @@ class Action extends Model
 
     public function request(): BelongsToMany
     {
-        return $this->belongsToMany(Request::class, 'action_requests', 'action_id', 'request_id');
+        return $this->belongsToMany(Request::class, 'action_requests', 'action_id', 'request_id')
+        ->withTimestamps();
         //return $this->belongsToMany(request::class);
     }
 
