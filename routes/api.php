@@ -29,7 +29,7 @@ Route::post('requests', [RequestsController::class, 'store']);
 Route::get('requests/{request_id}/actions/{action_id}', [RequestsController::class, 'add']);
 Route::get('requests/{id}', [RequestsController::class, 'show']);
 Route::put('requests/{id}', [RequestsController::class, 'update']);
-Route::put('requests/{request_id}/actions/{action_id}', [RequestsController::class, 'update_relation']);
+Route::put('requests/{request_id}/actions/{action_id}/{action_id2}', [RequestsController::class, 'update_relation']);
 Route::delete('requests/{id}', [RequestsController::class, 'destroy']);
 Route::delete('requests/{request_id}/actions/{action_id}', [RequestsController::class, 'delete_relation']);
 
