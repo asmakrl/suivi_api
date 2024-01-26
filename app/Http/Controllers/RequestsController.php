@@ -160,7 +160,7 @@ class RequestsController extends Controller
 
 
 
-           // return response()->json(Requests::with('action')->where('id', $request_id)->first(), 200);
+            // return response()->json(Requests::with('action')->where('id', $request_id)->first(), 200);
             return response()->json(['message', 'Request Has been Deleted.'],200);
         }
         else {
