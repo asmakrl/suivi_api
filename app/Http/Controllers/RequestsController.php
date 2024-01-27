@@ -13,10 +13,10 @@ class RequestsController extends Controller
      */
     public function index(Request $request)
     {
-        //$req = Requests::all();
-        $page = $request->query('page', 0);
-        $limit =  $request->query('limit', 10);
-        $req = Requests::with('action')->skip($page*$limit)->take($limit)->get();
+        $req = Requests::with('action')->paginate(10)->toArray();
+        //$page = $request->query('page', 0);
+        //$limit =  $request->query('limit', 10);
+       // $req = Requests::with('action')->skip($page*$limit)->take($limit)->get();
 
         return response()->json($req, 200);
     }
