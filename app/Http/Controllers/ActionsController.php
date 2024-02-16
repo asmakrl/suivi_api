@@ -26,6 +26,7 @@ class ActionsController extends Controller
         $action = New Action;
         $action -> name = $request -> name;
         $action -> action_time = $request -> action_time;
+        $action -> request_id = $request -> request_id;
         $action -> type_id = $request -> type_id;
         $action -> save();
 
@@ -55,6 +56,7 @@ class ActionsController extends Controller
             $action = Action::find($id);
             $action -> name = is_null($request->name)? $action->name : $request->name;
             $action->action_time = is_null($request->action_time)? $action->action_time : $request->action_time;
+            $action->request_id = is_null($request->request_id)? $action->request_id : $request->request_id;
             $action->type_id = is_null($request->type_id)? $action->action_type : $request->type_id;
             $action->save();
 
