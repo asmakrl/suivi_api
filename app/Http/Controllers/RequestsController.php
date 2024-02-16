@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Action;
 use App\Models\Request as Requests;
 use Illuminate\Http\Request;
+use Livewire\WithPagination;
+
 
 class RequestsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use WithPagination;
     public function index(Request $request)
     {
-        $req = Requests::with('action')->paginate(10)->toArray();
+        $size=$request->query('size',20);
+        $req = Requests::with('action','sender','state')->paginate($size);
         //$page = $request->query('page', 0);
         //$limit =  $request->query('limit', 10);
        // $req = Requests::with('action')->skip($page*$limit)->take($limit)->get();

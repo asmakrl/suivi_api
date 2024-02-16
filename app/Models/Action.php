@@ -11,19 +11,20 @@ class Action extends Model
 {
     use HasFactory;
     protected $table = 'actions';
-    protected $fillable = ['name','action_time','type_id'];
+    protected $fillable = ['name','action_time','request_id','type_id'];
 
+
+    public function request(): BelongsTo
+    {
+        return $this->belongsTo(Request::class);
+
+        //return $this->belongsToMany(request::class);
+    }
     public function type(): BelongsTo
     {
         return $this->belongsTo(type::class);
     }
 
-    public function request(): BelongsToMany
-    {
-        return $this->belongsToMany(Request::class, 'action_requests', 'action_id', 'request_id')
-        ->withTimestamps();
-        //return $this->belongsToMany(request::class);
-    }
 
 
 

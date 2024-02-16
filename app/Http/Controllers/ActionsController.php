@@ -14,7 +14,7 @@ class ActionsController extends Controller
      */
     public function index()
     {
-        $action = Action::all();     //with('sender')->get();;
+        $action = Action::with('type')->paginate(10);     //with('sender')->get();;
         return response()->json($action);
     }
 

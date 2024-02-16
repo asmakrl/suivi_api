@@ -17,10 +17,17 @@ return new class extends Migration
             $table->date('action_time');
             $table->timestamps();
 
+            $table->foreignId('request_id')
+                ->constrained()
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
+
             $table->foreignId('type_id')
                 ->constrained()
                 ->onUpdate('restrict')
                 ->onDelete('restrict');
+
+
         });
     }
 
