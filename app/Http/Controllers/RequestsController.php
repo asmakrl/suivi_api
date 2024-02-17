@@ -17,10 +17,13 @@ class RequestsController extends Controller
     public function index(Request $request)
     {
         $size=$request->query('size',20);
-        $req = Requests::with('action','sender','state')->paginate($size);
+        //$req = Requests::with('action','sender','state')->paginate($size);
         //$page = $request->query('page', 0);
         //$limit =  $request->query('limit', 10);
        // $req = Requests::with('action')->skip($page*$limit)->take($limit)->get();
+        $req = Requests::with(['action' => function ($query) {
+            $query->with('type'); // Preload the type relationship within action
+        }, 'sender', 'state'])->paginate($size);
 
         return response()->json($req, 200);
     }
