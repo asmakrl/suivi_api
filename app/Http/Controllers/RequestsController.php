@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Action;
 use App\Models\Request as Requests;
 use Illuminate\Http\Request;
-use Livewire\WithPagination;
 
 
 class RequestsController extends Controller
@@ -13,7 +12,7 @@ class RequestsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    use WithPagination;
+
     public function index(Request $request)
     {
         $size=$request->query('size',20);
@@ -146,7 +145,7 @@ class RequestsController extends Controller
     {
         if (Requests::where('id', $id)->exists()){
             $req = Requests::find($id);
-            $req-> action() -> detach();
+           // $req-> action() -> detach();
             $req->delete();
 
             return response()->json(['message', 'Request Has been Deleted.'],200);
