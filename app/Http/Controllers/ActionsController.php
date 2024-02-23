@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Action;
 
+use App\Models\Request as Requests;
 use Illuminate\Http\Request;
 
 
@@ -56,18 +57,21 @@ class ActionsController extends Controller
             $action = Action::find($id);
             $action -> name = is_null($request->name)? $action->name : $request->name;
             $action->action_time = is_null($request->action_time)? $action->action_time : $request->action_time;
-            $action->request_id = is_null($request->request_id)? $action->request_id : $request->request_id;
+            //$action->request_id = is_null($request->request_id)? $action->request_id : $request->request_id;
             $action->type_id = is_null($request->type_id)? $action->action_type : $request->type_id;
             $action->save();
 
-            return response()->json(['message','Action Updated.'],200);
-        }
-        else{
-            return response()->json(['message','Action Not Found'],404);
-        }
+            $req = $action->request()->with(['action' => function ($query) {
+                $query->with('type'); // Preload the type relationship within action
+            }, 'sender', 'state'])->first();
 
-
+            return response()->json($req, 200);
+        } else {
+            return response()->json(['message' => 'Action Not Found'], 404);
+        }
     }
+
+
 
     /**
      * Remove the specified resource from storage.
