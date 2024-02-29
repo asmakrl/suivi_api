@@ -6,6 +6,7 @@ use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SendersController;
 use App\Http\Controllers\StatesController;
 use App\Http\Controllers\TypesController;
+use App\Http\Controllers\FileUploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,7 @@ Route::delete('actions/{id}', [ActionsController::class, 'destroy']);
 //files
 Route::get('files', [FilesController::class, 'index']);
 Route::post('files', [FilesController::class, 'store']);
+
 Route::get('files/{id}', [FilesController::class, 'show']);
 Route::put('files/{id}', [FilesController::class, 'update']);
 Route::delete('files/{id}', [FilesController::class, 'destroy']);
@@ -67,3 +69,4 @@ Route::post('states', [StatesController::class, 'store']);
 Route::get('states/{id}', [StatesController::class, 'show']);
 Route::put('states/{id}', [StatesController::class, 'update']);
 Route::delete('states/{id}', [StatesController::class, 'destroy']);
+Route::post('/upload', [FileUploadController::class, 'upload']);

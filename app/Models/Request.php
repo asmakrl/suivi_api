@@ -19,9 +19,9 @@ class Request extends Model
         return $this->belongsTo(Sender::class);
     }
 
-    public function file(): BelongsToMany
+    public function file(): HasMany
     {
-        return $this->belongsToMany(File::class);
+        return $this->HasMany(File::class);
     }
 
     public function state(): BelongsTo

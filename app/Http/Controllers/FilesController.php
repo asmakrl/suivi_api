@@ -19,17 +19,21 @@ class FilesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
-        $file = New File;
-        $file -> title = $request -> title;
-        $file -> file_path = $request -> file_path;
-        $file -> file_size = $request ->file_size;
-        $file -> request_id = $request -> request_id;
-        $file -> save();
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = $file->getClientOriginalName();
+            $folder = uniqid() . '-' . now()->timestamp;
+            $file->storeAs('files/' . $folder, $filename);
 
-        return response()->json(['message','File Added.'],201);
+            return $folder;
+        }
+
+        return '';
     }
+
 
     /**
      * Display the specified resource.

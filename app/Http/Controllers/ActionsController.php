@@ -87,4 +87,16 @@ class ActionsController extends Controller
             return response()->json(['message', 'Action Not Found'], 404);
         }
     }
+
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = $file->getClientOriginalName();
+            $file->move(public_path('uploads'), $fileName);
+            return response()->json(['message' => 'File uploaded successfully'], 200);
+        } else {
+            return response()->json(['error' => 'No file uploaded'], 400);
+        }
+    }
 }
