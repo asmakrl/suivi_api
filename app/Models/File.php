@@ -10,7 +10,7 @@ class File extends Model
 {
     use HasFactory;
     protected $table = 'files';
-    protected $fillable = ['file_path','request_id'];
+    protected $fillable = ['title','file_path','request_id'];
 
     public function request(): BelongsTo
     {

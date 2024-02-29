@@ -24,14 +24,14 @@ class ActionsController extends Controller
      */
     public function store(Request $request)
     {
-        $action = New Action;
-        $action -> name = $request -> name;
-        $action -> action_time = $request -> action_time;
-        $action -> request_id = $request -> request_id;
-        $action -> type_id = $request -> type_id;
-        $action -> save();
+        $action = new Action;
+        $action->name = $request->name;
+        $action->action_time = $request->action_time;
+        $action->request_id = $request->request_id;
+        $action->type_id = $request->type_id;
+        $action->save();
 
-        return response()->json(['message','Action Added.'],201);
+        return response()->json(['message', 'Action Added.'], 201);
     }
 
     /**
@@ -40,25 +40,24 @@ class ActionsController extends Controller
     public function show($id)
     {
         $action = Action::find($id);
-        if(!empty($action)){
+        if (!empty($action)) {
             return response()->json($action);
-        }
-        else{
-            return response()->json(['message','Action Not Found'],404);
+        } else {
+            return response()->json(['message', 'Action Not Found'], 404);
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request, $id)
     {
-        if ( Action::where('id',$id)->exists()) {
+        if (Action::where('id', $id)->exists()) {
             $action = Action::find($id);
-            $action -> name = is_null($request->name)? $action->name : $request->name;
-            $action->action_time = is_null($request->action_time)? $action->action_time : $request->action_time;
+            $action->name = is_null($request->name) ? $action->name : $request->name;
+            $action->action_time = is_null($request->action_time) ? $action->action_time : $request->action_time;
             //$action->request_id = is_null($request->request_id)? $action->request_id : $request->request_id;
-            $action->type_id = is_null($request->type_id)? $action->action_type : $request->type_id;
+            $action->type_id = is_null($request->type_id) ? $action->action_type : $request->type_id;
             $action->save();
 
             $req = $action->request()->with(['action' => function ($query) {
@@ -72,31 +71,18 @@ class ActionsController extends Controller
     }
 
 
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-        if (Action::where('id',$id)->exists()) {
+        if (Action::where('id', $id)->exists()) {
             $action = Action::find($id);
             $action->delete();
             return response()->json(['message', 'Action Deleted.'], 200);
-    }
-        else {
+        } else {
             return response()->json(['message', 'Action Not Found'], 404);
         }
     }
 
-    public function upload(Request $request)
-    {
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = $file->getClientOriginalName();
-            $file->move(public_path('uploads'), $fileName);
-            return response()->json(['message' => 'File uploaded successfully'], 200);
-        } else {
-            return response()->json(['error' => 'No file uploaded'], 400);
-        }
-    }
 }

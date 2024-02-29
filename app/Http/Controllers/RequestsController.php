@@ -49,10 +49,11 @@ class RequestsController extends Controller
             $savedFile = $request->file(key: 'file')->store(options: 'public');
 //            $avatar = Storage::disk(name: 'public')->put(path: '/', $request->file(key: 'file'));
             $file = new File();
-            $file->titre = "aze";
+            $file->title = "aze";
             $file->file_path = $savedFile;
             $file->file_size = "111";
             $file->request_id = $req->id;
+            $file->save();
         }
 
         return response()->json(['message' => 'Request has been created successfully'], 201);
