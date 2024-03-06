@@ -11,11 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('senders', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            //$table->date('sent_at');
+            $table->string('title');
+            $table->string('file_path');
+          //  $table->string('file_size');
             $table->timestamps();
+
+            $table->foreignId('request_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('senders');
+        Schema::dropIfExists('files');
     }
 };

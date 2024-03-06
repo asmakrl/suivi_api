@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,6 +20,7 @@ class SenderFactory extends Factory
         return [
             'name' => $this->faker->name(),
             //'sent_at' => $this->faker->date(),
+            'category_id'=> Category::all()->random()->id,
 
         ];
     }

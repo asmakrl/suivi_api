@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Sender;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class SendersController extends Controller
      */
     public function index()
     {
-        $sender = Sender::all();     //with('sender')->get();;
+        $sender = Sender::with('category')->get();     //with('sender')->get();;
         return response()->json($sender);
     }
 
@@ -23,6 +24,7 @@ class SendersController extends Controller
     {
         $sender = New Sender;
         $sender -> name = $request -> name;
+        $sender -> category_id = $request -> category_id;
         $sender -> save();
 
         return response()->json(['message','Sender Added.'],201);
@@ -50,6 +52,7 @@ class SendersController extends Controller
         if ( Sender::where('id',$id)->exists()){
             $sender = Sender::find($id);
             $sender->name = is_null($request->name)? $sender->name : $request->name;
+            $sender->category_id = is_null($request->category_id)? $sender->category_id : $request->category_id;
             $sender->save();
 
             return response()->json(['message','Sender Updated.'],200);
@@ -59,6 +62,21 @@ class SendersController extends Controller
         }
 
 
+    }
+    public function getByCategory($categoryValue)
+    {
+        // Find the category by its value
+        $category = Category::where('value', $categoryValue)->first();
+
+        // Check if the category exists
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        // Get senders belonging to the found category
+        $senders = Sender::where('category_id', $category->id)->get();
+
+        return response()->json($senders);
     }
 
     /**

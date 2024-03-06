@@ -20,7 +20,7 @@ class FileFactory extends Factory
         return [
             'title' => $this->faker->title(),
             'file_path' => $this->faker->filePath(),
-            'file_size' => $this->faker->randomFloat(),
+            //'file_size' => $this->faker->randomFloat(),
             'request_id'=> Request::all()->random()->id,
 
         ];

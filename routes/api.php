@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SendersController;
@@ -39,6 +40,7 @@ Route::get('senders', [SendersController::class, 'index']);
 Route::post('senders', [SendersController::class, 'store']);
 Route::get('senders/{id}', [SendersController::class, 'show']);
 Route::put('senders/{id}', [SendersController::class, 'update']);
+Route::get('/senders/by-category/{categoryValue}', [SendersController::class, 'getByCategory']);
 Route::delete('senders/{id}', [SendersController::class, 'destroy']);
 
 //types
@@ -70,3 +72,6 @@ Route::get('states/{id}', [StatesController::class, 'show']);
 Route::put('states/{id}', [StatesController::class, 'update']);
 Route::delete('states/{id}', [StatesController::class, 'destroy']);
 Route::post('/upload', [FileUploadController::class, 'upload']);
+
+//categories
+Route::get('categories',[CategoriesController::class, 'index']);

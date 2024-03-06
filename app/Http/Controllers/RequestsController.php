@@ -36,25 +36,28 @@ class RequestsController extends Controller
 
     public function store(Request $request)
     {
-
-
         $req = new Requests();
         $req->title = $request->title;
         $req->description = $request->description;
         $req->received_at = $request->received_at;
+        $req->status = $request->status;
         $req->sender_id = $request->sender_id;
         $req->state_id = $request->state_id;
         $req->save();
-        if ($request->hasFile(key: 'file')) {
-            $savedFile = $request->file(key: 'file')->store(options: 'public');
-//            $avatar = Storage::disk(name: 'public')->put(path: '/', $request->file(key: 'file'));
-            $file = new File();
-            $file->title = "aze";
-            $file->file_path = $savedFile;
-            $file->file_size = "111";
-            $file->request_id = $req->id;
-            $file->save();
-        }
+        // Check if files were uploaded
+        if ($request->hasFile('files')) {
+            // Iterate over each uploaded file
+            foreach ($request->file('files') as $uploadedFile) {
+                // Store the file
+                $savedFile = $uploadedFile->store('public');
+
+                // Create a new file record in the database
+                $file = new File();
+                $file->title = $uploadedFile->getClientOriginalName(); // You can adjust this as needed
+                $file->file_path = $savedFile;
+                $file->request_id = $req->id;
+                $file->save();
+        }}
 
         return response()->json(['message' => 'Request has been created successfully'], 201);
 
@@ -105,6 +108,7 @@ class RequestsController extends Controller
             $req->title = is_null($request->title) ? $req->title : $request->title;
             $req->description = is_null($request->description) ? $req->description : $request->description;
             $req->received_at = is_null($request->received_at) ? $req->received_at : $request->received_at;
+            $req->status = is_null($request->status) ? $req->status : $request->status;
             $req->sender_id = is_null($request->sender_id) ? $req->sender_id : $request->sender_id;
             $req->state_id = is_null($request->state_id) ? $req->state_id : $request->state_id;
             $req->save();
