@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->date('received_at');
-            $table->enum('status', ['على قيد الدراسة', 'مخلق'])->default('على قيد الدراسة');
+            $table->enum('status', ['على قيد الدراسة', 'مغلق'])->default('على قيد الدراسة');
            // $table->string('status')->default('على قيد الدراسة');
             $table->timestamps();
 

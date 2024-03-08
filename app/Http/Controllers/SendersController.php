@@ -11,11 +11,22 @@ class SendersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sender = Sender::with('category')->get();     //with('sender')->get();;
-        return response()->json($sender);
+        $categoryId = $request->input('category_id');
+
+        // Check if category_id parameter is provided
+        if ($categoryId !== null) {
+            // Filter senders by category_id
+            $senders = Sender::where('category_id', $categoryId)->get();
+            return response()->json($senders);
+        } else {
+            // If no category_id provided, return all senders
+            $senders = Sender::all();
+            return response()->json($senders);
+        }
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -63,21 +74,7 @@ class SendersController extends Controller
 
 
     }
-    public function getByCategory($categoryValue)
-    {
-        // Find the category by its value
-        $category = Category::where('value', $categoryValue)->first();
 
-        // Check if the category exists
-        if (!$category) {
-            return response()->json(['message' => 'Category not found'], 404);
-        }
-
-        // Get senders belonging to the found category
-        $senders = Sender::where('category_id', $category->id)->get();
-
-        return response()->json($senders);
-    }
 
     /**
      * Remove the specified resource from storage.

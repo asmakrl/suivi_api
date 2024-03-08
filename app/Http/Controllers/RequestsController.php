@@ -24,7 +24,9 @@ class RequestsController extends Controller
         $req = Requests::with(['action' => function ($query) {
             $query->with('type');
         },
-            'file', 'sender', 'state'])->paginate($size);
+             'sender' => function ($query) {
+                 $query->with('category');
+                 },'file', 'state'])->paginate($size);
 
         return response()->json($req, 200);
     }
