@@ -35,7 +35,10 @@ class Request extends Model
         //return $this->belongsToMany(Action::class);
     }
 
-
+    public function status(): BelongsToMany
+    {
+        return $this->belongsToMany(Status::class);
+    }
 
 
 }
