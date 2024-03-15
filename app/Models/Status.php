@@ -16,7 +16,7 @@ class Status extends Model
 
     public function request(): BelongsToMany
     {
-        return $this->belongsToMany(Request::class);
+        return $this->belongsToMany(Request::class, 'request_statuses')->withTimestamps();
     }
 
 }

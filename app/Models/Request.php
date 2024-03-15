@@ -37,7 +37,7 @@ class Request extends Model
 
     public function status(): BelongsToMany
     {
-        return $this->belongsToMany(Status::class);
+        return $this->belongsToMany(Status::class, 'request_statuses')->withTimestamps();
     }
 
 

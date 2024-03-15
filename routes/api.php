@@ -6,6 +6,7 @@ use App\Http\Controllers\FilesController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SendersController;
 use App\Http\Controllers\StatesController;
+use App\Http\Controllers\StatusesController;
 use App\Http\Controllers\TypesController;
 use App\Http\Controllers\FileUploadController;
 use Illuminate\Http\Request;
@@ -28,19 +29,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //requests
 Route::get('requests', [RequestsController::class, 'index']);
 Route::post('requests', [RequestsController::class, 'store']);
-Route::get('requests/{request_id}/actions/{action_id}', [RequestsController::class, 'add']);
+Route::get('requests/{request_id}/statuses/{status_id}', [RequestsController::class, 'add']);
 Route::get('requests/{id}', [RequestsController::class, 'show']);
 Route::put('requests/{id}', [RequestsController::class, 'update']);
-Route::put('requests/{request_id}/actions/{action_id}/{action_id2}', [RequestsController::class, 'update_relation']);
+Route::put('requests/{request_id}/statuses/{status_id}/{status_id2}', [RequestsController::class, 'update_relation']);
 Route::delete('requests/{id}', [RequestsController::class, 'destroy']);
-Route::delete('requests/{request_id}/actions/{action_id}', [RequestsController::class, 'delete_relation']);
+Route::delete('requests/{request_id}/statuses/{status_id}', [RequestsController::class, 'delete_relation']);
 
 //senders
 Route::get('senders', [SendersController::class, 'index']);
 Route::post('senders', [SendersController::class, 'store']);
 Route::get('senders/{id}', [SendersController::class, 'show']);
 Route::put('senders/{id}', [SendersController::class, 'update']);
-Route::get('/senders/by-category/{categoryValue}', [SendersController::class, 'getByCategory']);
 Route::delete('senders/{id}', [SendersController::class, 'destroy']);
 
 //types
@@ -75,3 +75,7 @@ Route::post('/upload', [FileUploadController::class, 'upload']);
 
 //categories
 Route::get('categories',[CategoriesController::class, 'index']);
+
+//statuses
+Route::get('statuses',[StatusesController::class, 'index']);
+

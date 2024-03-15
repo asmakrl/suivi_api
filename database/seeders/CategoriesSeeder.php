@@ -13,6 +13,19 @@ class CategoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory()->count(50)->create();
+        //Category::factory()->count(50)->create();
+        $data = [
+            ['category' => 'المديريات'],
+            ['category' => 'المفتشين'],
+            ['category' => 'هيئة نظامية'],
+            ['category' => 'جامعة'],
+            ['category' => 'مركز جامعي'],
+            ['category' => 'مدرسة عليا'],
+            ['category' => 'مدرسة وطنية عليا'],
+        ];
+
+        foreach ($data as $item) {
+            Category::create($item);
+        }
     }
 }

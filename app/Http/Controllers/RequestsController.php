@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Action;
 use App\Models\File;
 use App\Models\Request as Requests;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 
@@ -65,23 +66,23 @@ class RequestsController extends Controller
 
     }
 
-    public function add($request_id, $action_id)
+    public function add($request_id, $status_id)
     {
         $req = Requests::find($request_id);
-        $action = Action::find($action_id);
+        $status = Status::find($status_id);
 
-        if ($req && $action) {
+        if ($req && $status) {
             //$req = Requests::find($request_id);
             //$action = Action::find($action_id);
 
 
-            $req->action()->attach($action);
+            $req->status()->attach($status);
 
             //return response()->json(Requests::with('action')->where('id', $request_id)->get(), 201);
 
-            return response()->json(['message' => 'Action has been added successfully'], 201);
+            return response()->json(['message' => 'Status has been added successfully'], 201);
         } else {
-            return response()->json(['message' => 'Request or Action not found'], 404);
+            return response()->json(['message' => 'Request or Status not found'], 404);
         }
     }
 
@@ -92,8 +93,27 @@ class RequestsController extends Controller
     public function show($id)
     {
         $req = Requests::find($id);
+
         if (!empty($req)) {
-            return response()->json($req);
+            // Load the request along with its statuses, ordered by the pivot table's timestamp (assuming there's a timestamp field in your pivot table)
+            $requestWithStatuses = Requests::with(['status' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])->find($id);
+
+            // Extract the last status from the loaded request
+            $lastStatus = $requestWithStatuses->status->first();
+
+            return response()->json($lastStatus);
+        } else {
+            return response()->json(['message' => 'Request not found'], 404);
+        }
+    }
+
+    public function show1($id)
+    {
+        $req = Requests::find($id);
+        if (!empty($req)) {
+            return response()->json($req::with('status'));
         } else {
             return response()->json(['message' => 'Request not found'], 404);
         }
@@ -120,19 +140,19 @@ class RequestsController extends Controller
         }
     }
 
-    public function update_relation($request_id, $action_id1, $action_id2)
+    public function update_relation($request_id, $status_id1, $status_id2)
     {
         $req = Requests::find($request_id);
 
 
         if ($req) {
-            $action = Action::find($action_id1);
-            if ($action) {
+            $status = Action::find($status_id1);
+            if ($status) {
 
-                $req->action()->detach($action);
-                $newAction = Action::find($action_id2);
-                if ($newAction) {
-                    $req->action()->attach($newAction);
+                $req->action()->detach($status);
+                $newStatus = Action::find($status_id2);
+                if ($newStatus) {
+                    $req->action()->attach($newStatus);
 
                 } else {
                     return response()->json(['error' => 'New Action not found'], 404);
@@ -165,16 +185,16 @@ class RequestsController extends Controller
         }
     }
 
-    public function delete_relation($request_id, $action_id)
+    public function delete_relation($request_id, $status_id)
     {
-        $req = Requests::find($request_id);
-        $action = Action::find($action_id);
+        $req = Requests::find($status_id);
+        $action = Action::find($status_id);
 
         if ($req && $action) {
             //$req = Requests::find($request_id);
 
 
-            $req->action()->detach($action_id);
+            $req->action()->detach($status_id);
 
 
             // return response()->json(Requests::with('action')->where('id', $request_id)->first(), 200);
