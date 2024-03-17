@@ -78,4 +78,6 @@ Route::get('categories',[CategoriesController::class, 'index']);
 
 //statuses
 Route::get('statuses',[StatusesController::class, 'index']);
+Route::get('statuses/{id}', [StatusesController::class, 'show']);
+
 

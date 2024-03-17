@@ -13,4 +13,14 @@ class StatusesController extends Controller
         return response()->json($state);
     }
 
+    public function show($id)
+    {
+        $status = Status::find($id);
+        if (!empty($status)) {
+            return response()->json($status);
+        } else {
+            return response()->json(['message', 'Action Not Found'], 404);
+        }
+    }
+
 }
