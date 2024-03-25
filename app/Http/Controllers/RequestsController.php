@@ -7,6 +7,8 @@ use App\Models\File;
 use App\Models\Request as Requests;
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class RequestsController extends Controller
@@ -15,22 +17,32 @@ class RequestsController extends Controller
      * Display a listing of the resource.
      */
 
+
+
+
     public function index(Request $request)
     {
         $size = $request->query('size', 20);
-        //$req = Requests::with('action','sender','state')->paginate($size);
-        //$page = $request->query('page', 0);
-        //$limit =  $request->query('limit', 10);
-        // $req = Requests::with('action')->skip($page*$limit)->take($limit)->get();
-        $req = Requests::with(['action' => function ($query) {
-            $query->with('type');
-        },
-             'sender' => function ($query) {
-                 $query->with('category');
-                 },'file', 'state'])->paginate($size);
 
-        return response()->json($req, 200);
+        // Fetch requests with their associated relationships
+        $requests = Requests::with([
+            'action' => function ($query) {
+                $query->with('type');
+            },
+            'sender' => function ($query) {
+                $query->with('category');
+            },
+            'status' ,
+
+            'file',
+            'state',
+        ])->paginate($size);
+
+        return response()->json($requests, 200);
     }
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -43,10 +55,12 @@ class RequestsController extends Controller
         $req->title = $request->title;
         $req->description = $request->description;
         $req->received_at = $request->received_at;
-        $req->status = $request->status;
         $req->sender_id = $request->sender_id;
         $req->state_id = $request->state_id;
         $req->save();
+
+        $req->status()->attach(1);
+
         // Check if files were uploaded
         if ($request->hasFile('files')) {
             // Iterate over each uploaded file
@@ -64,7 +78,9 @@ class RequestsController extends Controller
 
         return response()->json(['message' => 'Request has been created successfully'], 201);
 
+
     }
+
 
     public function add($request_id, $status_id)
     {

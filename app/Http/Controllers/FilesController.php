@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FilesController extends Controller
 {
@@ -34,7 +35,23 @@ class FilesController extends Controller
         return '';
     }
 
+    public function download($fileId)
+    {
+        // Find the file by its ID in the database
+        $file = File::find($fileId);
 
+        // Get the file path from the database
+        $filePath = $file->file_path;
+
+        // Check if the file exists
+        if (Storage::exists($filePath)) {
+            // Generate a response to download the file
+            return response()->download(public_path('app/public' . $filePath), $file->title,);
+        } else {
+            // File not found
+            abort(404, 'File not found.');
+        }
+    }
     /**
      * Display the specified resource.
      */

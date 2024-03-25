@@ -11,7 +11,14 @@ class SendersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
+    {
+
+            $senders = Sender::all();
+            return response()->json($senders);
+
+    }
+    public function index2(Request $request)
     {
         $categoryId = $request->input('category_id');
 
