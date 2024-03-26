@@ -11,4 +11,14 @@ class CategoriesController extends Controller
         $category = Category::all();
         return response()->json($category);
     }
+
+    public function show($id)
+    {
+        $category = Category::find($id);
+        if (!empty($category)) {
+            return response()->json($category['nomAr']);
+        } else {
+            return response()->json(['message', 'Action Not Found'], 404);
+        }
+    }
 }

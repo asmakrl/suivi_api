@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Str;
 use App\Models\Action;
 use App\Models\File;
 use App\Models\Request as Requests;
@@ -18,13 +18,11 @@ class RequestsController extends Controller
      */
 
 
-
-
     public function index(Request $request)
     {
         $size = $request->query('size', 20);
 
-        // Fetch requests with their associated relationships
+        // Fetch requests with their associated relationships including the last status
         $requests = Requests::with([
             'action' => function ($query) {
                 $query->with('type');
@@ -32,16 +30,25 @@ class RequestsController extends Controller
             'sender' => function ($query) {
                 $query->with('category');
             },
-            'status' ,
-
+            'status' => function ($query) {
+                // Subquery to fetch the last status for each request
+                $query->orderByDesc('pivot_created_at');//->limit(1); // Order by pivot table creation date
+            },
             'file',
             'state',
         ])->paginate($size);
 
+        // Manipulate the response to include the last status for each request
+        foreach ($requests as $request) {
+            // Access the latest status if available
+            $lastStatus = $request->status->first();
+
+            // Set the last_status attribute to the status value or 'N/A' if no status available
+            $request->last_status = $lastStatus->status;
+        }
+
         return response()->json($requests, 200);
     }
-
-
 
 
     /**
@@ -71,7 +78,8 @@ class RequestsController extends Controller
                 // Create a new file record in the database
                 $file = new File();
                 $file->title = $uploadedFile->getClientOriginalName(); // You can adjust this as needed
-                $file->file_path = $savedFile;
+                $storagePath = Str::replaceFirst('public/', 'storage/', $savedFile);
+                $file->file_path = $storagePath;
                 $file->request_id = $req->id;
                 $file->save();
         }}
