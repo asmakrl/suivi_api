@@ -154,11 +154,28 @@ class RequestsController extends Controller
             $req->title = is_null($request->title) ? $req->title : $request->title;
             $req->description = is_null($request->description) ? $req->description : $request->description;
             $req->received_at = is_null($request->received_at) ? $req->received_at : $request->received_at;
-            $req->status = is_null($request->status) ? $req->status : $request->status;
+
             $req->sender_id = is_null($request->sender_id) ? $req->sender_id : $request->sender_id;
             $req->state_id = is_null($request->state_id) ? $req->state_id : $request->state_id;
             $req->save();
-            return response()->json(['message' => 'Request has been updated successfully'], 200);
+
+            // Retrieve the updated request with its relations
+            $updatedRequest = Requests::with([
+                'action' => function ($query) {
+                    $query->with('type');
+                },
+                'sender' => function ($query) {
+                    $query->with('category');
+                },
+                'status' => function ($query) {
+                    // Subquery to fetch the last status for each request
+                    $query->orderByDesc('pivot_created_at');
+                },
+                'file',
+                'state',
+            ])->find($id);
+
+            return response()->json($updatedRequest);
         } else {
             return response()->json(['message' => 'Request Not Found'], 404);
         }
@@ -191,6 +208,17 @@ class RequestsController extends Controller
         }
 
     }
+    public function showFile($id)
+    {
+        $request = Requests::with('file')->find($id); // Eager load the files relationship
+
+        if (!empty($request)) {
+            // Return the request along with its associated files
+            return response()->json($request);
+        } else {
+            return response()->json(['message' => 'Request not found'], 404);
+        }
+    }
 
 
     /**
@@ -200,7 +228,7 @@ class RequestsController extends Controller
     {
         if (Requests::where('id', $id)->exists()) {
             $req = Requests::find($id);
-            // $req-> action() -> detach();
+           // $req-> status() -> detach();
             $req->delete();
 
             return response()->json(['message', 'Request Has been Deleted.'], 200);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FilesController extends Controller
 {
@@ -23,43 +24,33 @@ class FilesController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
-            $folder = uniqid() . '-' . now()->timestamp;
-            $file->storeAs('files/' . $folder, $filename);
+        // Validate the incoming request
+        $request->validate([
+            'file' => 'required|file',
+        ]);
 
-            return $folder;
-        }
+        // Store the file in storage
+        $path = $request->file('file')->store('files');
 
-        return '';
-    }
-
-    public function download($fileId)
-    {
-        // Find the file by its ID in the database
-        $file = File::find($fileId);
-
-        // Get the file path from the database
-        $filePath = $file->file_path;
-
-        // Check if the file exists
-        if (Storage::exists($filePath)) {
-            // Generate a response to download the file
-            return response()->download(public_path('app/public' . $filePath), $file->title,);
+        if ($path) {
+            // File uploaded successfully
+            return response()->json(['message' => 'File uploaded successfully', 'file_path' => $path], 201);
         } else {
-            // File not found
-            abort(404, 'File not found.');
+            // File upload failed
+            return response()->json(['message' => 'Failed to upload file'], 500);
         }
     }
+
+
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        $file = File::find($id);
-        if(!empty($file)){
-            return response()->json($file);
+        $req = Requests::find($id);
+        if(!empty($req)){
+            $updatedFiles = $req->files()->get();
+            return response()->json($updatedFiles);
         }
         else{
             return response()->json(['message','File Not Found'],404);
@@ -91,15 +82,23 @@ class FilesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-        if (File::where('id',$id)->exists()) {
+        if (File::where('id', $id)->exists()) {
             $file = File::find($id);
+            // $req-> status() -> detach();
             $file->delete();
-            return response()->json(['message', 'File Deleted.'], 200);
+
+            return response()->json(['message', 'Request Has been Deleted.'], 200);
+        } else {
+            return response()->json(['message', 'Request Not Found'], 404);
         }
-        else {
-            return response()->json(['message', 'File Not Found'], 404);
-        }
+    }
+    public function destroy1( $file)
+    {
+        // Delete the file from storage
+        Storage::delete($file);
+
+        return response()->json(['message' => 'File deleted successfully'], 200);
     }
 }

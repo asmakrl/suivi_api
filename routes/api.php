@@ -30,7 +30,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('requests', [RequestsController::class, 'index']);
 Route::post('requests', [RequestsController::class, 'store']);
 Route::get('requests/{request_id}/statuses/{status_id}', [RequestsController::class, 'add']);
-Route::get('requests/{id}', [RequestsController::class, 'show']);
+//Route::get('requests/{id}', [RequestsController::class, 'show']);
+Route::get('requests/{id}', [RequestsController::class, 'showFile']);
+
 Route::put('requests/{id}', [RequestsController::class, 'update']);
 Route::put('requests/{request_id}/statuses/{status_id}/{status_id2}', [RequestsController::class, 'update_relation']);
 Route::delete('requests/{id}', [RequestsController::class, 'destroy']);
@@ -64,7 +66,7 @@ Route::get('/files/{fileId}/download', [FilesController::class, 'download'])->na
 
 Route::get('files/{id}', [FilesController::class, 'show']);
 Route::put('files/{id}', [FilesController::class, 'update']);
-Route::delete('files/{id}', [FilesController::class, 'destroy']);
+Route::delete('files/{file}', [FilesController::class, 'destroy']);
 
 //states
 Route::get('states', [StatesController::class, 'index']);
