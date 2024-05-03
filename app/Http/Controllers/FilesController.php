@@ -22,23 +22,22 @@ class FilesController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        // Validate the incoming request
-        $request->validate([
-            'file' => 'required|file',
-        ]);
+       if($request->hasFile('files')){
+           foreach ($request->file('files') as $uploadedFile){
+               // Store the file
+               $savedFile = $uploadedFile->store('public');
 
-        // Store the file in storage
-        $path = $request->file('file')->store('files');
-
-        if ($path) {
-            // File uploaded successfully
-            return response()->json(['message' => 'File uploaded successfully', 'file_path' => $path], 201);
-        } else {
-            // File upload failed
-            return response()->json(['message' => 'Failed to upload file'], 500);
-        }
+               // Create a new file record in the database
+               $file = new File();
+               $file->title = $uploadedFile->getClientOriginalName(); // You can adjust this as needed
+               $storagePath = Str::replaceFirst('public/', 'storage/', $savedFile);
+               $file->file_path = $storagePath;
+               $file->request_id = $id;
+               $file->save();
+           }
+       }
     }
 
 
@@ -47,7 +46,7 @@ class FilesController extends Controller
      */
     public function show($id)
     {
-        $req = Requests::find($id);
+        $req = Request::find($id);
         if(!empty($req)){
             $updatedFiles = $req->files()->get();
             return response()->json($updatedFiles);
