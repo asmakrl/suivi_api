@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\File;
+use App\Models\Request as Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -46,9 +47,9 @@ class FilesController extends Controller
      */
     public function show($id)
     {
-        $req = Request::find($id);
+        $req = Requests::find($id);
         if(!empty($req)){
-            $updatedFiles = $req->files()->get();
+            $updatedFiles = $req->file()->get();
             return response()->json($updatedFiles);
         }
         else{

@@ -50,51 +50,32 @@ class RequestsController extends Controller
         return response()->json($requests, 200);
     }
 
-    public function search(Request $request)
-    {
-        // Retrieve all input data from the request
-        $searchParams = $request->all();
 
-        // Start building the query
-        $query = Requests::query();
+        function search(Request $request)
+        {
+            // Retrieve the 'title' input parameter from the request
+            $title = $request->input('title');
 
-        // Apply dynamic search criteria based on input parameters
-        foreach ($searchParams as $key => $value) {
-            if ($value !== null && $value !== '') {
-                switch ($key) {
-                    case 'title':
-                        $query->where('title', 'like', "%{$value}%");
-                        break;
-                    case 'description':
-                        $query->where('description', 'like', "%{$value}%");
-                        break;
-                    case 'sender_name':
-                        $query->whereHas('sender', function ($q) use ($value) {
-                            $q->where('name', 'like', "%{$value}%");
-                        });
-                        break;
-                    // Add more cases for additional search criteria as needed
-                }
+            // Start building the query
+            $query = Requests::query();
+
+            // Apply search criteria for the 'title' field
+            if ($title !== null && $title !== '') {
+                $query->where('title', 'like', "%{$title}%");
             }
+
+            // Execute the query to retrieve matching records
+            $results = $query->get();
+
+            // Manipulate the response if needed
+            // For example, you can transform the results, add additional data, etc.
+
+            return response()->json($results, 200);
         }
 
-        // Execute the query and retrieve results with pagination
-        $results = $query->with(['status', 'file'])->paginate(10);
-
-        foreach ($results as $request) {
-            // Access the latest status if available
-            $lastStatus = $request->status->first();
-
-            // Set the last_status attribute to the status value or 'N/A' if no status available
-            $request->last_status = $lastStatus->status;
-        }
-
-        return response()->json($results, 200);
-    }
 
 
-
-    /**
+        /**
      * Store a newly created resource in storage.
      */
 
