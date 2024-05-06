@@ -62,7 +62,9 @@ class ActionsController extends Controller
 
             $req = $action->request()->with(['action' => function ($query) {
                 $query->with('type'); // Preload the type relationship within action
-            }, 'sender', 'state'])->first();
+            }, 'sender'=> function ($query) {
+                $query->with('category');},
+                'state','file'])->first();
 
             return response()->json($req, 200);
         } else {

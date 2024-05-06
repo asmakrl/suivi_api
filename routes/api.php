@@ -37,7 +37,7 @@ Route::put('requests/{id}', [RequestsController::class, 'update']);
 Route::put('requests/{request_id}/statuses/{status_id}/{status_id2}', [RequestsController::class, 'update_relation']);
 Route::delete('requests/{id}', [RequestsController::class, 'destroy']);
 Route::delete('requests/{request_id}/statuses/{status_id}', [RequestsController::class, 'delete_relation']);
-Route::get('requests/search', [RequestsController::class, 'search']);
+Route::get('requests/search/{key}', [RequestsController::class, 'search']);
 
 //senders
 Route::get('senders', [SendersController::class, 'index']);
