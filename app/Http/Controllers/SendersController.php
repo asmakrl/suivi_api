@@ -14,7 +14,7 @@ class SendersController extends Controller
     public function index()
     {
 
-            $senders = Sender::all();
+            $senders = Sender::with('category')->get();
             return response()->json($senders);
 
     }

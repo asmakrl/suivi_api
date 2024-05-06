@@ -17,6 +17,7 @@ return new class extends Migration
             //$table->date('sent_at');
             $table->timestamps();
 
+
             $table->foreignId('category_id')
                 ->constrained()
                 ->onUpdate('cascade')

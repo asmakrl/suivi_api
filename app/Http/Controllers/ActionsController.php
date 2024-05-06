@@ -15,7 +15,10 @@ class ActionsController extends Controller
      */
     public function index()
     {
-        $action = Action::with('type')->paginate(10);     //with('sender')->get();;
+        $action = Action::with(['sender' => function ($query) {
+            $query->with('category');
+        },
+        'type'])->paginate(10);     //with('sender')->get();;
         return response()->json($action);
     }
 
@@ -28,6 +31,7 @@ class ActionsController extends Controller
         $action->name = $request->name;
         $action->action_time = $request->action_time;
         $action->request_id = $request->request_id;
+        $action->sender_id = $request->sender_id;
         $action->type_id = $request->type_id;
         $action->save();
 
@@ -57,12 +61,15 @@ class ActionsController extends Controller
             $action->name = is_null($request->name) ? $action->name : $request->name;
             $action->action_time = is_null($request->action_time) ? $action->action_time : $request->action_time;
             //$action->request_id = is_null($request->request_id)? $action->request_id : $request->request_id;
+            $action->sender_id = is_null($request->sender_id)? $action->sender_id : $request->sender_id;
             $action->type_id = is_null($request->type_id) ? $action->action_type : $request->type_id;
             $action->save();
 
             $req = $action->request()->with(['action' => function ($query) {
                 $query->with('type'); // Preload the type relationship within action
-            }, 'sender', 'state'])->first();
+            }, 'sender'=> function ($query) {
+                $query->with('category');},
+                'state','file'])->first();
 
             return response()->json($req, 200);
         } else {
