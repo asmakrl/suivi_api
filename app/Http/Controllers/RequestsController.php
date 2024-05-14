@@ -25,14 +25,16 @@ class RequestsController extends Controller
         // Fetch requests with their associated relationships including the last status
         $requests = Requests::with([
             'action' => function ($query) {
-                $query->with('sender','type');
+                $query->with('sender', function ($query) {
+                    $query->with('category');
+                })->with('type');
             },
             'sender' => function ($query) {
                 $query->with('category');
             },
             'status' => function ($query) {
                 // Subquery to fetch the last status for each request
-                $query->orderByDesc('pivot_created_at');//->limit(1); // Order by pivot table creation date
+                $query->orderByDesc('pivot_created_at'); //->limit(1); // Order by pivot table creation date
             },
             'file',
             'state',
@@ -59,7 +61,9 @@ class RequestsController extends Controller
         if ($key !== null && $key !== '') {
             $requests = Requests::with([
                 'action' => function ($query) {
-                    $query->with('type');
+                    $query->with('sender', function ($query) {
+                        $query->with('category');
+                    })->with('type');
                 },
                 'sender' => function ($query) {
                     $query->with('category');
@@ -93,43 +97,6 @@ class RequestsController extends Controller
 
     }
 
-    public function search1(Request $request)
-    {
-        $size = $request->query('size', 20);
-
-        // Retrieve the search query from the request
-        $query = $request->input('query');
-
-        // Fetch requests that match the search query based on the 'title' field
-        $requests = Requests::query()
-            ->where('title', 'like', "%{$query}%")
-            ->with([
-                'action' => function ($query) {
-                    $query->with('type');
-                },
-                'sender' => function ($query) {
-                    $query->with('category');
-                },
-                'status' => function ($query) {
-                    $query->orderByDesc('pivot_created_at');
-                },
-                'file',
-                'state',
-            ])
-            ->paginate($size); // Adjust the pagination size as needed
-
-        // Manipulate the response to include the last status for each request
-        // Manipulate the response to include the last status for each request
-        foreach ($requests as $request) {
-            // Access the latest status if available
-            $lastStatus = $request->status->first();
-
-            // Set the last_status attribute to the status value or 'N/A' if no status available
-            $request->last_status = $lastStatus->status;}
-
-        // Return the response as JSON
-        return response()->json($requests, 200);
-    }
 
 
 
@@ -243,16 +210,18 @@ class RequestsController extends Controller
             $req->save();
 
             // Retrieve the updated request with its relations
-            $updatedRequest = Requests::with([
+            $updatedRequest =  Requests::with([
                 'action' => function ($query) {
-                    $query->with('type');
+                    $query->with('sender', function ($query) {
+                        $query->with('category');
+                    })->with('type');
                 },
                 'sender' => function ($query) {
                     $query->with('category');
                 },
                 'status' => function ($query) {
                     // Subquery to fetch the last status for each request
-                    $query->orderByDesc('pivot_created_at');
+                    $query->orderByDesc('pivot_created_at'); //->limit(1); // Order by pivot table creation date
                 },
                 'file',
                 'state',

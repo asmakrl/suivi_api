@@ -18,7 +18,7 @@ class ActionsController extends Controller
         $action = Action::with(['sender' => function ($query) {
             $query->with('category');
         },
-        'type'])->paginate(10);     //with('sender')->get();;
+            'type'])->paginate(10);     //with('sender')->get();;
         return response()->json($action);
     }
 
@@ -66,8 +66,11 @@ class ActionsController extends Controller
             $action->save();
 
             $req = $action->request()->with(['action' => function ($query) {
-                $query->with('type'); // Preload the type relationship within action
-            }, 'sender'=> function ($query) {
+                $query->with(['sender' => function ($query) {
+                    $query->with('category');
+                },'type']); // Preload the type relationship within action
+            }
+            , 'sender'=> function ($query) {
                 $query->with('category');},
                 'state','file'])->first();
 
