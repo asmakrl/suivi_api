@@ -18,7 +18,21 @@ class SendersController extends Controller
             return response()->json($senders);
 
     }
-    public function index2(Request $request)
+    public function sendersByCategory(Request $request, $categoryId)
+    {
+
+
+        // Query senders based on the provided category_id
+        $senders = Sender::with('category') // Eager load the category relationship
+        ->when($categoryId, function ($query) use ($categoryId) {
+            $query->where('category_id', $categoryId);
+        })
+            ->get();
+
+        // Return the list of senders as JSON response
+        return response()->json($senders);
+    }
+    public function senderbycategoryl(Request $request)
     {
         $categoryId = $request->input('category_id');
 

@@ -41,6 +41,8 @@ Route::get('requests/search/{key}', [RequestsController::class, 'search']);
 
 //senders
 Route::get('senders', [SendersController::class, 'index']);
+Route::get('senders/{category_id}', [SendersController::class, 'sendersByCategory']);
+
 Route::post('senders', [SendersController::class, 'store']);
 Route::get('senders/{id}', [SendersController::class, 'show']);
 Route::put('senders/{id}', [SendersController::class, 'update']);
