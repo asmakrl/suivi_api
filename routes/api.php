@@ -4,6 +4,7 @@ use App\Http\Controllers\ActionsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\ResponsesController;
 use App\Http\Controllers\SendersController;
 use App\Http\Controllers\StatesController;
 use App\Http\Controllers\StatusesController;
@@ -85,5 +86,10 @@ Route::get('categories',[CategoriesController::class, 'index']);
 //statuses
 Route::get('statuses',[StatusesController::class, 'index']);
 Route::get('statuses/{id}', [StatusesController::class, 'show']);
+
+//responses
+Route::get('responses',[ResponsesController::class, 'index']);
+Route::get('responses/{id}', [ResponsesController::class, 'show']);
+Route::post('responses', [ResponsesController::class, 'store']);
 
 

@@ -27,6 +27,8 @@ class RequestsController extends Controller
             'action' => function ($query) {
                 $query->with('sender', function ($query) {
                     $query->with('category');
+                })->with('response', function($query){
+                    $query->with('file');
                 })->with('type');
             },
             'sender' => function ($query) {
@@ -63,6 +65,8 @@ class RequestsController extends Controller
                 'action' => function ($query) {
                     $query->with('sender', function ($query) {
                         $query->with('category');
+                    })->with('response', function($query){
+                        $query->with('file');
                     })->with('type');
                 },
                 'sender' => function ($query) {
@@ -214,6 +218,8 @@ class RequestsController extends Controller
                 'action' => function ($query) {
                     $query->with('sender', function ($query) {
                         $query->with('category');
+                    })->with('response', function($query){
+                        $query->with('file');
                     })->with('type');
                 },
                 'sender' => function ($query) {

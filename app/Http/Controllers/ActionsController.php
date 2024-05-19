@@ -17,8 +17,10 @@ class ActionsController extends Controller
     {
         $action = Action::with(['sender' => function ($query) {
             $query->with('category');
-        },
-            'type'])->paginate(10);     //with('sender')->get();;
+        }])->with(['response', function($query){
+            $query->with('file');
+        }])->with('type')
+           ->get();     //with('sender')->get();;
         return response()->json($action);
     }
 
@@ -33,7 +35,10 @@ class ActionsController extends Controller
         $action->request_id = $request->request_id;
         $action->sender_id = $request->sender_id;
         $action->type_id = $request->type_id;
+
         $action->save();
+
+
 
         return response()->json(['message', 'Action Added.'], 201);
     }

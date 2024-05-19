@@ -22,14 +22,22 @@ class Action extends Model
         //return $this->belongsToMany(request::class);
     }
 
+    public function response(): HasMany
+    {
+        return $this->HasMany(Response::class);
+    }
+
     public function sender(): BelongsTo
     {
         return $this->belongsTo(Sender::class);
     }
     public function type(): BelongsTo
     {
-        return $this->belongsTo(type::class);
+        return $this->belongsTo(Type::class);
     }
+
+
+
 
 
 
