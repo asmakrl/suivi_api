@@ -8,7 +8,7 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        $category = Category::all();
+        $category = Category::with('sender')->get();
         return response()->json($category);
     }
 

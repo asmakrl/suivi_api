@@ -15,13 +15,10 @@ class ActionsController extends Controller
      */
     public function index()
     {
-        $action = Action::with(['sender' => function ($query) {
-            $query->with('category');
-        }])->with(['response', function($query){
-            $query->with('file');
-        }])->with('type')
-           ->get();     //with('sender')->get();;
-        return response()->json($action);
+        $actions = Action::with(['sender.category', 'response.file', 'type'])
+            ->paginate();
+
+        return response()->json($actions);
     }
 
     /**

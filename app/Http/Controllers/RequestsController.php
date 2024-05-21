@@ -22,34 +22,32 @@ class RequestsController extends Controller
     {
         $size = $request->query('size', 20);
 
-        // Fetch requests with their associated relationships including the last status
         $requests = Requests::with([
-            'action' => function ($query) {
-                $query->with('sender', function ($query) {
-                    $query->with('category');
-                })->with('response', function($query){
-                    $query->with('file');
-                })->with('type');
-            },
-            'sender' => function ($query) {
-                $query->with('category');
-            },
+            'action.sender.category',
+            'action.response.file',
+            'action.type',
+            'sender.category',
             'status' => function ($query) {
                 // Subquery to fetch the last status for each request
-                $query->orderByDesc('pivot_created_at'); //->limit(1); // Order by pivot table creation date
+                $query->orderByDesc('pivot_created_at');
             },
             'file',
             'state',
         ])->paginate($size);
 
+
         // Manipulate the response to include the last status for each request
-        foreach ($requests as $request) {
+        $requests->getCollection()->transform(function ($requestItem) {
             // Access the latest status if available
-            $lastStatus = $request->status->first();
+            $lastStatus = $requestItem->status->first();
 
             // Set the last_status attribute to the status value or 'N/A' if no status available
-            $request->last_status = $lastStatus->status;
-        }
+            $requestItem->last_status = $lastStatus->status;
+            // Restructure the actions array to remove numeric keys
+            $requestItem->action = $requestItem->action->values()->all();
+
+            return $requestItem;
+        });
 
         return response()->json($requests, 200);
     }
