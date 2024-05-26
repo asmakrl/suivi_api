@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Response extends Model
 {
@@ -19,8 +20,12 @@ class Response extends Model
         return $this->belongsTo(Action::class);
     }
 
-    public function file(): HasMany
+   /** public function file(): HasMany
     {
         return $this->HasMany(File::class);
+    }**/
+    public function file(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 }

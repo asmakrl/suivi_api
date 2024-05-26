@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('file_path');
-          //  $table->string('file_size');
+            $table->morphs('fileable');
+
+            //  $table->string('file_size');
             $table->timestamps();
 
-            $table->foreignId('request_id')
+          /**  $table->foreignId('request_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -26,7 +28,8 @@ return new class extends Migration
             $table->foreignId('response_id')
                 ->constrained()
                 ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onDelete('cascade');**/
+
         });
     }
 

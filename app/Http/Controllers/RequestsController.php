@@ -132,9 +132,11 @@ class RequestsController extends Controller
                 $file->title = $uploadedFile->getClientOriginalName(); // You can adjust this as needed
                 $storagePath = Str::replaceFirst('public/', 'storage/', $savedFile);
                 $file->file_path = $storagePath;
-                $file->request_id = $req->id;
-                $file->save();
-        }}
+                $req->file()->save($file);
+
+            }
+        }
+
 
         return response()->json(['message' => 'Request has been created successfully'], 201);
 

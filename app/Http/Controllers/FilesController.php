@@ -25,7 +25,14 @@ class FilesController extends Controller
 
     public function store(Request $request, $id)
     {
-       if($request->hasFile('files')){
+        $req = Requests::find($id);
+
+        if(empty ($req)){
+            return response()->json(['message','request not found']);
+        }
+        //if($request->hasFile('files'))
+        if($request->hasFile('files'))
+        {
            foreach ($request->file('files') as $uploadedFile){
                // Store the file
                $savedFile = $uploadedFile->store('public');
@@ -35,8 +42,9 @@ class FilesController extends Controller
                $file->title = $uploadedFile->getClientOriginalName(); // You can adjust this as needed
                $storagePath = Str::replaceFirst('public/', 'storage/', $savedFile);
                $file->file_path = $storagePath;
-               $file->request_id = $id;
-               $file->save();
+             //  $file->request_id = $id;
+            //   $file->save();
+               $req->file()->save($file);
            }
        }
     }
