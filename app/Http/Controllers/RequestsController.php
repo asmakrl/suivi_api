@@ -23,9 +23,11 @@ class RequestsController extends Controller
         $size = $request->query('size', 20);
 
         $requests = Requests::with([
-            'action.sender.category',
-            'action.response.file',
-            'action.type',
+            'action' => function ($query) {
+                $query->with('sender', function ($query) {
+                    $query->with('category');
+                })->with('response.file')->with('type');
+            },
             'sender.category',
             'status' => function ($query) {
                 // Subquery to fetch the last status for each request
