@@ -47,8 +47,8 @@ class ResponsesController extends Controller
                 $file->title = $uploadedFile->getClientOriginalName(); // You can adjust this as needed
                 $storagePath = Str::replaceFirst('public/', 'storage/', $savedFile);
                 $file->file_path = $storagePath;
-                $file->response_id = $res->id;
-                $file->save();
+                //$file->response_id = $res->id;
+                $res->file()->save($file);
             }}
 
         return response()->json(['message' => 'Response has been created successfully'], 201);
