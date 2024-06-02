@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->Text('source');
             $table->longText('description');
             $table->date('received_at');
             //$table->enum('status', ['على قيد الدراسة', 'مغلق'])->default('على قيد الدراسة');

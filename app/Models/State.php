@@ -17,4 +17,8 @@ class State extends Model
     {
         return $this->belongsToMany(Request::class);
     }
+    public function sender(): BelongsToMany
+    {
+        return $this->belongsToMany(Sender::class);
+    }
 }

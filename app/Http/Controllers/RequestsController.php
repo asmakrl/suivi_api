@@ -115,6 +115,7 @@ class RequestsController extends Controller
         $req = new Requests();
         $req->title = $request->title;
         $req->description = $request->description;
+        $req->source = $request->source;
         $req->received_at = $request->received_at;
         $req->sender_id = $request->sender_id;
         $req->state_id = $request->state_id;

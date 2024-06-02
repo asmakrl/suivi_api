@@ -26,5 +26,9 @@ class Sender extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function state(): BelongsTo
+    {
+        return $this->belongsTo(State::class);
+    }
 
 }

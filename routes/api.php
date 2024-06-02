@@ -43,6 +43,7 @@ Route::get('requests/search/{key}', [RequestsController::class, 'search']);
 //senders
 Route::get('senders', [SendersController::class, 'index']);
 Route::get('senders/{category_id}', [SendersController::class, 'sendersByCategory']);
+Route::get('senders/category/{categoryId}/state/{stateId?}', [SendersController::class, 'sendersByCategoryAndState']);
 
 Route::post('senders', [SendersController::class, 'store']);
 Route::get('senders/{id}', [SendersController::class, 'show']);
@@ -91,5 +92,8 @@ Route::get('statuses/{id}', [StatusesController::class, 'show']);
 Route::get('responses',[ResponsesController::class, 'index']);
 Route::get('responses/{id}', [ResponsesController::class, 'show']);
 Route::post('responses', [ResponsesController::class, 'store']);
+Route::put('responses/{id}', [ResponsesController::class, 'update']);
+Route::delete('responses/{id}', [ResponsesController::class, 'destroy']);
+
 
 

@@ -13,7 +13,7 @@ class Request extends Model
 {
     use HasFactory;
     protected $table = 'requests';
-    protected $fillable = ['title','description','received_at','status','sender_id','state_id'];
+    protected $fillable = ['title','source','description','received_at','sender_id','state_id'];
 
     public function sender(): BelongsTo
     {

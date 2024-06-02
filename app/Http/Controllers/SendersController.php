@@ -14,10 +14,28 @@ class SendersController extends Controller
     public function index()
     {
 
-            $senders = Sender::with('category')->get();
+            $senders = Sender::with('category','state')->get();
             return response()->json($senders);
 
     }
+
+    public function sendersByCategoryAndState(Request $request, $categoryId, $stateId)
+    {
+        // Query senders based on the provided category_id and state_id
+        $senders = Sender::with('category','state') // Eager load the category relationship
+        ->when($categoryId, function ($query) use ($categoryId) {
+            $query->where('category_id', $categoryId);
+        })
+            ->when($stateId, function ($query) use ($stateId) {
+                $query->where('state_id', $stateId);
+            })
+            ->get();
+
+        // Return the list of senders as a JSON response
+        return response()->json($senders);
+    }
+
+
     public function sendersByCategory(Request $request, $categoryId)
     {
 
