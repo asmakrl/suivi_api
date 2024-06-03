@@ -25,10 +25,11 @@ class RequestsController extends Controller
         $requests = Requests::with([
             'action' => function ($query) {
                 $query->with('sender', function ($query) {
-                    $query->with('category');
+                    $query->with('category', 'state');
                 })->with('response.file')->with('type');
             },
             'sender.category',
+            'sender.state',
             'status' => function ($query) {
                 // Subquery to fetch the last status for each request
                 $query->orderByDesc('pivot_created_at');
@@ -72,6 +73,7 @@ class RequestsController extends Controller
                 'sender' => function ($query) {
                     $query->with('category');
                 },
+                'sender.state',
                 'status' => function ($query) {
                     // Subquery to fetch the last status for each request
                     $query->orderByDesc('pivot_created_at'); //->limit(1); // Order by pivot table creation date
@@ -211,7 +213,7 @@ class RequestsController extends Controller
             $req->title = is_null($request->title) ? $req->title : $request->title;
             $req->description = is_null($request->description) ? $req->description : $request->description;
             $req->received_at = is_null($request->received_at) ? $req->received_at : $request->received_at;
-
+            $req->source = is_null($request->source) ? $req->source : $request->source;
             $req->sender_id = is_null($request->sender_id) ? $req->sender_id : $request->sender_id;
             $req->state_id = is_null($request->state_id) ? $req->state_id : $request->state_id;
             $req->save();
@@ -228,6 +230,8 @@ class RequestsController extends Controller
                 'sender' => function ($query) {
                     $query->with('category');
                 },
+                'sender.state',
+
                 'status' => function ($query) {
                     // Subquery to fetch the last status for each request
                     $query->orderByDesc('pivot_created_at'); //->limit(1); // Order by pivot table creation date

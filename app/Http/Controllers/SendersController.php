@@ -75,6 +75,8 @@ class SendersController extends Controller
         $sender = New Sender;
         $sender -> name = $request -> name;
         $sender -> category_id = $request -> category_id;
+        $sender -> state_id = $request -> state_id;
+
         $sender -> save();
 
         return response()->json(['message','Sender Added.'],201);
@@ -103,6 +105,8 @@ class SendersController extends Controller
             $sender = Sender::find($id);
             $sender->name = is_null($request->name)? $sender->name : $request->name;
             $sender->category_id = is_null($request->category_id)? $sender->category_id : $request->category_id;
+            $sender->state_id = is_null($request->state_id)? $sender->state_id : $request->state_id;
+
             $sender->save();
 
             return response()->json(['message','Sender Updated.'],200);

@@ -15,7 +15,7 @@ class ActionsController extends Controller
      */
     public function index()
     {
-        $actions = Action::with(['sender.category', 'response.file', 'type'])
+        $actions = Action::with(['sender.category','sender.state', 'response.file', 'type'])
             ->paginate();
 
         return response()->json($actions);
@@ -74,6 +74,8 @@ class ActionsController extends Controller
             }
             , 'sender'=> function ($query) {
                 $query->with('category');},
+                'sender.state',
+
                 'state','file'])->first();
 
             return response()->json($req, 200);
