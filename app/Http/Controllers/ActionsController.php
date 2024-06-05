@@ -70,7 +70,7 @@ class ActionsController extends Controller
             $req = $action->request()->with(['action' => function ($query) {
                 $query->with(['sender' => function ($query) {
                     $query->with('category');
-                },'type']); // Preload the type relationship within action
+                },'response.file','type']); // Preload the type relationship within action
             }
             , 'sender'=> function ($query) {
                 $query->with('category');},
