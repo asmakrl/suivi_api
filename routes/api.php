@@ -69,7 +69,7 @@ Route::get('files', [FilesController::class, 'index']);
 Route::post('files/{requestId}', [FilesController::class, 'store']);
 Route::get('/files/{fileId}/download', [FilesController::class, 'download'])->name('files.download');
 
-Route::get('files/{id}', [FilesController::class, 'show']);
+Route::get('files/{id}/{param}', [FilesController::class, 'show']);
 Route::put('files/{id}', [FilesController::class, 'update']);
 Route::delete('files/{file}', [FilesController::class, 'destroy']);
 

@@ -26,13 +26,14 @@ class FilesController extends Controller
 
     public function store(Request $request, $id)
     {
-        error_log($request->param);
+
         if ($request->param == 'request') {
             $req = Requests::find($id);
         } else {
             $req = Response::find($id);
         }
-
+        error_log($req);
+        error_log($id);
 
         if (empty($req)) {
             return response()->json(['message', 'request not found']);
@@ -59,9 +60,13 @@ class FilesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id, $param)
     {
-        $req = Requests::find($id);
+        if ($param == 'request') {
+            $req = Requests::find($id);
+        } else {
+            $req = Response::find($id);
+        }
         if (!empty($req)) {
             $updatedFiles = $req->file()->get();
             return response()->json($updatedFiles);
